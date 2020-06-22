@@ -315,11 +315,11 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
         mapView.getMap().addInputListener(inputListener);
         mapView.getMap().getMapObjects().addCollection();
 
-        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.context.getCurrentActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        } else {
-            this.addUserLocationLayer();
-        }
+        // if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        //     ActivityCompat.requestPermissions(this.context.getCurrentActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        // } else {
+        //     this.addUserLocationLayer();
+        // }
 
         MapKitFactory.getInstance().onStart();
         mapView.onStart();
@@ -415,9 +415,9 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
     }
     private void navigateToLocationAfterChecks() {
         try {
-            if (userLocationLayer == null) {
-                this.addUserLocationLayer();
-            }
+            // if (userLocationLayer == null) {
+            //     this.addUserLocationLayer();
+            // }
 
             CameraPosition cameraPosition = userLocationLayer.cameraPosition();
             if (cameraPosition != null) {
