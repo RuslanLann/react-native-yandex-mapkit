@@ -54,6 +54,7 @@
 + (NSString*) selectedPinImage;
 + (NSString*) userLocationImage;
 + (NSString*) disabledImage;
++ (NSString*) courierImage;
 
 - (void) addMarkerWithJSON: (NSMutableDictionary *)json;
 - (void) addPolygon: (NSMutableArray*)rectPoints backgroundColor: (UIColor*)backgroundColor borderColor: (UIColor*)borderColor dict: (NSDictionary*)dict;
