@@ -53,6 +53,7 @@
 + (NSString*) selectedPinImage;
 + (NSString*) userLocationImage;
 + (NSString*) disabledImage;
++ (NSString*) courierImage;
 
 - (void) addMarkerWithJSON: (NSMutableDictionary *)json;
 - (void) addPolygon: (NSMutableArray*)rectPoints identifier: (NSString*)identifier;
