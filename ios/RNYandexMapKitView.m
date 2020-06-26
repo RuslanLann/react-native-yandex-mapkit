@@ -99,7 +99,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
                                                                                    @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
                                                                                    @"longitude" : [NSString stringWithFormat:@"%f", point.longitude],
                                                                                    @"location": location,
-                                                                                   @"descriptionLocation" : descriptionLocation,
+                                                                                   @"descriptionLocation": descriptionLocation == nil ? @"" : descriptionLocation,
                                                                                    };
 
                                                      NSLog(@"onLocationSearch with output info: %@", addressDict);
