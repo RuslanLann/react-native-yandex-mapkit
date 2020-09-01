@@ -10,7 +10,6 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -369,7 +368,7 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
         mapView.getMap().addInputListener(inputListener);
         mapView.getMap().getMapObjects().addCollection();
 
-        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.context.getCurrentActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
             this.addUserLocationLayer();
