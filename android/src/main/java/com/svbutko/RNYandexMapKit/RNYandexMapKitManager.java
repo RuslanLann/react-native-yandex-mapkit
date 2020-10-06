@@ -490,7 +490,7 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
                 Point point = cameraPosition.getTarget();
                 if (point != null) {
                     mapView.getMap().move(
-                            new CameraPosition(point, 18.0f, 0.0f, 0.0f),
+                            new CameraPosition(point, 14.0f, 0.0f, 0.0f),
                             new Animation(Animation.Type.SMOOTH, 1),
                             null);
                 }

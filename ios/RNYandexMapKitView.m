@@ -301,7 +301,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 - (void) navigateToUserLocation {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         YMKPoint* point = [self getDeviceLocation];
-        YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:18 azimuth:0 tilt:0];
+        YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:14 azimuth:0 tilt:0];
         YMKAnimation* animation = [YMKAnimation animationWithType:YMKAnimationTypeSmooth duration:1];
 
         [self.map.mapWindow.map moveWithCameraPosition:cameraPos animationType:animation cameraCallback:nil];
@@ -311,7 +311,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 - (void) getUserLocation {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         YMKPoint* point = [self getDeviceLocation];
-        YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:18 azimuth:0 tilt:0];
+        YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:14 azimuth:0 tilt:0];
 
         YMKSearchOptions* options = [YMKSearchOptions new];
         options.searchTypes = YMKSearchTypeGeo;
