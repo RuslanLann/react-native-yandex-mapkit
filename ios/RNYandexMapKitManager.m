@@ -21,6 +21,7 @@ RCT_EXPORT_VIEW_PROPERTY(onMarkerPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onPolygonPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSuggestionsFetch, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDeviceLocationSearch, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onCameraPositionChange, RCTBubblingEventBlock)
 
 RCT_CUSTOM_VIEW_PROPERTY(searchLocation, BOOL, RNYandexMapKitView) {
     if ([json  isEqual: @(YES)]) {

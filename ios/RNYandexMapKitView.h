@@ -25,6 +25,7 @@
 @property (nonatomic) RCTBubblingEventBlock onPolygonPress;
 @property (nonatomic) RCTBubblingEventBlock onSuggestionsFetch;
 @property (nonatomic) RCTBubblingEventBlock onDeviceLocationSearch;
+@property (nonatomic, copy) RCTBubblingEventBlock _Nullable onCameraPositionChange;
 
 @property (strong, nonatomic) YMKSearchManager* searchManager;
 @property (nonatomic) CLLocationManager* locationManager;

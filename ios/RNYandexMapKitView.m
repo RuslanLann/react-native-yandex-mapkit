@@ -500,8 +500,30 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 - (void)onObjectUpdatedWithView:(YMKUserLocationView *)view event:(YMKObjectEvent *)event { }
 
 
-- (void)onCameraPositionChangedWithMap:(YMKMap *)map cameraPosition:(nonnull YMKCameraPosition *)cameraPosition cameraUpdateSource:(YMKCameraUpdateSource)cameraUpdateSource finished:(BOOL)finished
-{
+-(NSDictionary*) cameraPositionToJSON:(YMKCameraPosition*) position {
+    NSDictionary* addressDict = @{
+        @"azimuth": [NSNumber numberWithFloat:position.azimuth],
+        @"tilt": [NSNumber numberWithFloat:position.tilt],
+        @"zoom": [NSNumber numberWithFloat:position.zoom],
+        @"point": @{
+                @"latitude": [NSNumber numberWithDouble:position.target.latitude],
+                @"longitude": [NSNumber numberWithDouble:position.target.longitude],
+        },
+    };
+    
+    return addressDict;
+}
+
+- (void)onCameraPositionChangedWithMap:(nonnull YMKMap *)map
+                        cameraPosition:(nonnull YMKCameraPosition *)cameraPosition
+                    cameraUpdateSource:(YMKCameraUpdateSource)cameraUpdateSource
+                              finished:(BOOL)finished {
+    if (self.onCameraPositionChange) {
+        if (finished) {
+            self.onCameraPositionChange([self cameraPositionToJSON:cameraPosition]);
+        }
+    }
+
     _zoom = cameraPosition.zoom;
 
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
