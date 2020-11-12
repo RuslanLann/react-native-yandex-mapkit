@@ -1,8 +1,8 @@
 /*tslint:disable:interface-name*/
 
 declare module "react-native-yandex-mapkit" {
-    import React, {Component} from "react";
-    import {StyleProp, ViewStyle} from "react-native";
+    import React, { Component } from "react";
+    import { StyleProp, ViewStyle, NativeSyntheticEvent } from "react-native";
 
     export interface MapViewProps<T, B> {
         markers?: MarkerProps<T>[];
@@ -14,6 +14,7 @@ declare module "react-native-yandex-mapkit" {
         onLocationSearch?: (data: any) => void;
         onSuggestionsFetch?: (data: SuggestionsResult) => void;
         onDeviceLocationSearch?: (data: DeviceLocation) => void;
+        onCameraPositionChange?: (event: NativeSyntheticEvent<CameraPosition>) => void;
         searchLocation?: boolean;
         searchRoute?: MarkerProps[];
         searchMarker?: MarkerProps;
@@ -95,5 +96,12 @@ declare module "react-native-yandex-mapkit" {
     export interface DeviceLocation extends LatLng {
         location: string;
         descriptionLocation?: string;
+    }
+
+    export interface CameraPosition {
+        zoom: number;
+        tilt: number;
+        azimuth: number;
+        point: LatLng;
     }
 }
