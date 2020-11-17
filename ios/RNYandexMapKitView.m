@@ -4,6 +4,7 @@
 
 @implementation RNYandexMapKitView
 
+static NSString* emptyImage = @"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==";
 static NSString* iconImage = @"iVBORw0KGgoAAAANSUhEUgAAAB4AAAAqCAYAAACk2+sZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS40E0BoxAAAAkhJREFUWEftl79O40AQxv0OkMROZCAHytsc75AKIfEOQEFDAz21BQ0F0h05TgEhCoKERIEQgoIKJCr665b5otkwux4HW7FJcVj6SZv5832eOI7XgTFmKqhBn4uZmZjo9prRzsHS/HHSWbgiHpNO+wFrxJBDDWo1DR81aIHI37C+/SdqvNHa5AG16KH12BNQg2g6q9XWe80wt6EPeqFBa/UEUgEUnoSNnhSZBNZKmTsfUPC7FV3LxjJgTcfcMe1FjXPZUCasPTIfmfYb9UNZWAXsMTS3xrgN1OIK6A6NaRHTL/DSS2bS/9E2g7VV87C5MQRrxLRaDfaKC017t7Ji/r280Am7B2LIaT0ZdAM6g10l4dBfbJvXJFFN7YEcalCraUjgGRw3w1ctKYFg3gO1moYEnviq1aRlsPxz7KT+gVr0aFqST42LTGuPPFN/G6f4/4yn9qsGRabOMy0I6Fn5qCUkZf9zwTM4rde2tKRGWf/V8MRXXeiROOnTienCmLY74Y2XqAz2iqe3EWBjbPLuvILSYY+Prc8XTj2c1jfGFujCKywN1nZ3mcK8yqlH0wLfmF5dZve9holhTX1Db0EBbU0GsnESWMsxBc4HCwqLvCFmwRopU5AKWKihjOvtXFeJGgTUhOt94AnlhnvVaYEatKDxJCr+yso9maZADUogwK+ZqokP1441BWrQB0IkeC8NNLjmU1OgBjUg+KsVPUkjCedymQI1mAWE6b58loaAY7lNgRocBwyO5lp7Sad9C47i5l5RU6AGq8cE77senOxoWv4fAAAAAElFTkSuQmCC";
 static NSString* locationImage = @"iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAYAAADFeBvrAAAAAXNSR0IArs4c6QAABVVJREFUaAXdWl1sFFUU/u7uoibSGkNiMAahUCEpSPEFo760D/JoMFh8Mr7W2JhgNUVeIFDRQkrjD1oTXxb1hQYTDCZGIt0iWFCkLEJDFQr+i4bYdtvQn90dz7kzk52Z3fndu23teZm5c+895/vmnLl/ZwRUSverDyGfb4SGekBbQ9eVdK0GRJVuRsvQ/RgEhuk6RNc0YrFeNO//SRUMUbai7pfrkRPPEfCt0LRlkfQJ8SsRPIy49hGaD6Qj6TA6RSf0/raNyKGD9DSUA6BE3xTiaMMLXd+WqPN9FJ7QwW219Db3kjeafLWX00CIHvL6DrzYdTWMmuCEenclMJh5E8i/RN/GojBGIrcVmAFib6Ouajsad2WD6AlGKPnaEoxP9ZBXGoMoVd5GiF4svrMJz79xy0+3P6F329ZCTH+mj1h+6ipYzyOjdsdTaOm47GUl5lWJ7tYnIWb655wMg+QpgLEwJg9x95D0DJPRjDnEQ8tsVgmRgbboMTdPlfYQfzMyzOYZGX5x/IIZG2MsIcWEeDSTAwDP8vNUOPwYI2N1SDEhHprnajRzgPMsMkY5jdhb2b8hOWlicNbmGTuW8CU5T6HOOvk6PMQrgFmaNMPDL+4hsRJmixQ8pK/NzlrqZv32gbvvweaadThz82d8/89vwe3H8ai59it8VPpCM7gSRS2ZxJZV69G0qh5P3F8DIQRa+o6EI6Rjb2RIuod4C5DVLijC6KumFAmzk6ZpWJbcjd8nRs1Hwa4JsYG3HrqH9P1MsI4RW3mRsKo8/ef18GRYgeQAgxBvziogQUlYTfdci7q/kxxeEeBtczb7o1VpOfdRSJj2IoebqSCRWJ2QZwDmg4jXckhYTUYON1MJnWckaN6hA43wYpLYWrsBjy9dIUen8FrsPaKHm6GHuNCgQKczAaUSJEzTHG5Hrl00ixGv2hr2kO8i9Omah9H6SIMyT5RCW3a4sVLiQksfPjfzlrVLlmLjfQ8qCSs3S2WHm1SsVRMh8xDQzRTQfu44aj9+HQd/OIXJLJ1bKBY14cagRJVjceqO9JfxEbSc/BQrDu3BvvMnkJmedG8cskZJuBk2OeToeDa43Lw9jrb+Y1hOxHae/QK3JieCd3ZpqSbcWLmW4ZAbc7Hj+fjfqdvYfe5LLE/uQeupo/gj7NrL0K4u3FihGIvpB+ee2D0rJ7LTOJDuw8pD7WhO9WB41PfozKZPZbgxF/bQkM1CxMJUPocPLvdj9Sd7saP/88Ba1IUbmxRD7KGoq8GSoHM0Qe4bOBHIU2rDjfkgHZP5mZLQoj9kUh3nv/JVoDTc2BrlmmIy2STzM772QzVIXvnOd6BQGm7MgRJnxjxEySbFwt9U50DKVavycOOEGYlOiDNnFRAeJNzmqW/+uhFtZ+qG0+CgE9LTgCm3tlGf85D+Vvpkye6Hryo9wkiZqUwj5MgmpwErIO9c/LpomaQ83CzYC4Q4pynTgGpZjdCa771Lp21KlYYbY7bkYwuEpEnKaerHqzYA5Ra6LvTZVunKwk1iJcwWsROSCVrKaSoWXtB+OHhGalUbboTVkVS2E2KTnKDlnKZi2T/Qi5lcDsrCjTEyVofEHWUgmcrj2YZjmMk+Q3X3FtVHfDBK35JGfY8OX8KVkb8jajG6cb518V2bsLm9aO9SOKx3mlhQKUkmx9nmuNhC4RdqA+h8L0rLjIUxeWTCi78hK4LmzuMyQSt/NrJWzMG9TOtTspgxeYh7yFk7/Y9+vPD2kEmK/+Coq94EEeusxDxlmim68jzDNtl2gL9IuH8wD1ktLZifl6yk+H7B/F7mJLZgfgB0EuPyPPhF8z8Rhj4Ww1Y2ZAAAAABJRU5ErkJggg==";
 static NSString* selectedPinImage = @"iVBORw0KGgoAAAANSUhEUgAAAB4AAAAqCAYAAACk2+sZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS40E0BoxAAAAuVJREFUWEfFlz9oE2EYxl8QRBFE3BTURVx06uBYJzfBTVxcVbrdl7RFp6CbOuYSIy1FEaxZFGwHi3YsSNFBRMW1FlFoBSuY1sj5vHdfkrt+T/5cc0c/+CWX533f57lr7q45CYJgV6BiN2SmdEjKhVGpepfF9wpSMSbcVg01NtMNKsaRR8UDCBmTslnA+5aUvYAS1sKeMZ1hXnGoqEi9vkd8cw18o0G90BmdhQfzVrhYu3kEe/+GmqYCHvCiGY5QGx/B3n7lRjtAveDp5CQ++N5JNK5Tg2FQT3gnstobj0sHUfxIB7NAvZHhBvtmmg5kCTISwVKePI0T4R9tjnHi4e3gztvXwfu11WBjazNEt1XTGptJ4HtNzeoE+95z2hhjYulF0Gg20c6X1sbRw2YT+OYZ2kVkyjsc7Qlpstx9txi5D7C0l3m00SzNxO3uCm2wXJyfspaDL51hXh2QiZcnvBjxef2HtRt8ffr5nXp1QGavO9TI7D1rlX7pLPOMQCY2VtxCxNXFp9Ym/dJZ5mlZ0SPeJIWQG0tz1ib90lnmGYHMXrfI3I5YM3F6f6FFkNt3rJl4eUmLllzOas3EYZdo0ZLLdayZcr9wnhZjZHrnUjRT6qW9OMvWaEOMzO7VmqWZmNHvucqbkgz930mpmEqYGb5UvbO0KQ+Q1Q6Ojtq8oo1Zgox2XntDf5Sz5kwpjDrBUTh+kNOBLDALiazEhwfmFJoa7tDQNNQ7kRX/EAq+uUUGhwOeTo4jzJT24fL6QA12gnrB08nZLoRitXgGe/mHGqVBPeBFM5ioYE/xhEjM0gAP5q1QsQX2eJYaDgJmmWcLKraQurcfJsuOaX+WdZZ5tqBiHJmeOIprcJWYc/TpEDPMKw4Vt2MfXX/RoDjaQx5JGVRkSMU7B+PuZ7rW0MNmGVTshlTNBfzZ/7rB0FBjM92gYi+kXLyEy2QjFvpbNdbbCyr2Q2qTx6VSuB7im2Ospx9UzJ9A/gNsGGyJMIipoAAAAABJRU5ErkJggg==";
@@ -21,32 +22,33 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 - (instancetype) init
 {
     self = [super init];
-
+    
     _mapPolygons = [[NSMutableArray alloc]init];
     _mapMarkers = [[NSMutableArray alloc]init];
     _mapPolylines = [[NSMutableArray alloc]init];
-
+    
     _map = [[YMKMapView alloc] initWithFrame:self.bounds];
     _map.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
+    
     [_map.mapWindow.map addInputListenerWithInputListener: self];
     [_map.mapWindow.map addCameraListenerWithCameraListener: self];
-
+    
     [self addSubview:_map];
-
+    
     _searchManager = [YMKSearch.sharedInstance createSearchManagerWithSearchManagerType:YMKSearchSearchManagerTypeCombined];
-
+    
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
-
+    
     YMKUserLocationLayer* userLocationLayer = _map.mapWindow.map.userLocationLayer;
     [userLocationLayer setEnabled: true];
     [userLocationLayer setHeadingEnabled: true];
     [userLocationLayer setObjectListenerWithObjectListener: self];
-
-    _userLocationIcon = [locationImage decodeBase64ToImage];
+    
+    _userLocationIcon = [emptyImage decodeBase64ToImage];
     _zoom = 0;
-
+    _isTappedOnMap = false;
+    
     return self;
 }
 
@@ -65,64 +67,66 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 - (void) onMapTapWithMap:(YMKMap *)map point:(nonnull YMKPoint *)point
 {
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
-
+    
     if (_searchLocation) {
         YMKSearchOptions* options = [YMKSearchOptions new];
         options.searchTypes = YMKSearchTypeGeo;
-
+        
         _searchSession = [_searchManager submitWithPoint:point
                                                     zoom:@(_zoom)
                                            searchOptions:options
                                          responseHandler:^(YMKSearchResponse *response, NSError *error) {
-                                             NSArray* searchResultList = [[response collection] children];
-
-                                             if ([searchResultList count] > 0) {
-                                                 YMKGeoObject* geoObject = [searchResultList[0] obj];
-                                                 YMKPoint* resultLocation = [[geoObject geometry][0] point];
-
-                                                 if (resultLocation != nil) {
-                                                     YMKMapObjectCollection* mapObjects = self.map.mapWindow.map.mapObjects;
-                                                     if (self.userSearchPlacemark != nil) {
-                                                         @try {
-                                                             [mapObjects removeWithMapObject: self.userSearchPlacemark];
-                                                         } @catch (NSException *exception) {
-                                                             //TODO: Solve the error
-                                                         }
-                                                     }
-
-                                                     self.userSearchPlacemark = [mapObjects addPlacemarkWithPoint:resultLocation image:[userLocationImage decodeBase64ToImage]];
-
-                                                     NSString* descriptionLocation = [geoObject descriptionText];
-                                                     NSString* location = [geoObject name];
-
-                                                     NSDictionary* addressDict = @{
-                                                                                   @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
-                                                                                   @"longitude" : [NSString stringWithFormat:@"%f", point.longitude],
-                                                                                   @"location": location,
-                                                                                   @"descriptionLocation": descriptionLocation == nil ? @"" : descriptionLocation,
-                                                                                   };
-
-                                                     NSLog(@"onLocationSearch with output info: %@", addressDict);
-
-                                                     self.onLocationSearch(addressDict);
-                                                 }
-                                             }
-                                         }];
-
+            NSArray* searchResultList = [[response collection] children];
+            
+            if ([searchResultList count] > 0) {
+                YMKGeoObject* geoObject = [searchResultList[0] obj];
+                YMKPoint* resultLocation = [[geoObject geometry][0] point];
+                
+                if (resultLocation != nil) {
+                    YMKMapObjectCollection* mapObjects = self.map.mapWindow.map.mapObjects;
+                    if (self.userSearchPlacemark != nil) {
+                        @try {
+                            [mapObjects removeWithMapObject: self.userSearchPlacemark];
+                        } @catch (NSException *exception) {
+                            //TODO: Solve the error
+                        }
+                    }
+                    
+                    self.userSearchPlacemark = [mapObjects addPlacemarkWithPoint:resultLocation image:[emptyImage decodeBase64ToImage]];
+                    
+                    NSString* descriptionLocation = [geoObject descriptionText];
+                    NSString* location = [geoObject name];
+                    
+                    NSDictionary* addressDict = @{
+                        @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
+                        @"longitude" : [NSString stringWithFormat:@"%f", point.longitude],
+                        @"location": location,
+                        @"descriptionLocation": descriptionLocation == nil ? @"" : descriptionLocation,
+                    };
+                    
+                    NSLog(@"onLocationSearch with output info: %@", addressDict);
+                    
+                    self.onLocationSearch(addressDict);
+                }
+            }
+        }];
+        
     } else {
         NSDictionary* addressDict = @{
-                                      @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
-                                      @"longitude" : [NSString stringWithFormat:@"%f", point.longitude]
-                                      };
-
+            @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
+            @"longitude" : [NSString stringWithFormat:@"%f", point.longitude]
+        };
+        
         NSLog(@"onMapPress with output info: %@", addressDict);
         self.onMapPress(addressDict);
+        
+        _isTappedOnMap = true;
     }
 }
 
 - (void) setSearchMarker:(NSDictionary *)searchMarker {
     YMKMapObjectCollection* mapObjects = _map.mapWindow.map.mapObjects;
-
+    
     if (_userSearchPlacemark != nil) {
         @try {
             [mapObjects removeWithMapObject: self.userSearchPlacemark];
@@ -130,14 +134,14 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
             //TODO: Solve the error
         }
     }
-
+    
     NSDictionary *coordinates = [searchMarker objectForKey:@"coordinate"];
-
+    
     double latitude = [[coordinates valueForKey:@"latitude"] doubleValue];
     double longitude = [[coordinates valueForKey:@"longitude"] doubleValue];
-
+    
     YMKPoint* point = [YMKPoint pointWithLatitude:latitude longitude:longitude];
-
+    
     _userSearchPlacemark = [mapObjects addPlacemarkWithPoint:point image:[userLocationImage decodeBase64ToImage]];
 }
 
@@ -148,17 +152,17 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 
 - (void) setSearchRoute:(NSArray *)searchRoute {
     NSMutableArray* points = [[NSMutableArray alloc]init];
-
+    
     for (NSDictionary *marker in searchRoute) {
         NSDictionary *coordinates = [marker objectForKey:@"coordinate"];
-
+        
         double latitude = [[coordinates valueForKey:@"latitude"] doubleValue];
         double longitude = [[coordinates valueForKey:@"longitude"] doubleValue];
-
+        
         YMKPoint* point = [YMKPoint pointWithLatitude:latitude longitude:longitude];
         [points addObject:point];
     }
-
+    
     [self submitRouteRequest:points];
 }
 
@@ -167,27 +171,27 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
         if ([points count] == 2) {
             NSMutableArray* requestPoints = [[NSMutableArray alloc]init];
             YMKDrivingDrivingOptions *options = [[YMKDrivingDrivingOptions alloc]init];
-
+            
             YMKRequestPoint *firstPoint = [YMKRequestPoint requestPointWithPoint:[points objectAtIndex:0] type:YMKRequestPointTypeWaypoint pointContext:nil];
             YMKRequestPoint *secondPoint = [YMKRequestPoint requestPointWithPoint:[points objectAtIndex:1] type:YMKRequestPointTypeWaypoint pointContext:nil];
             [requestPoints addObject:firstPoint];
             [requestPoints addObject:secondPoint];
-
+            
             [_drivingRouter requestRoutesWithPoints:requestPoints
-                                         drivingOptions:options
-                                           routeHandler:^(NSArray<YMKDrivingRoute *> *routes, NSError *error) {
-                                               [self clearPolylines];
-                                               YMKMapObjectCollection* mapObjects = self.map.mapWindow.map.mapObjects;
-
-                                               if ([routes count] > 0) {
-                                                   YMKPolylineMapObject *polyline = [mapObjects addPolylineWithPolyline:[[routes objectAtIndex:0] geometry]];
-                                                   [polyline setStrokeColor:[UIColor colorWithRed:194.0f/255.0f
-                                                                                           green:19.0f/255.0f
-                                                                                            blue:19.0f/255.0f
-                                                                                           alpha:1.0f]];
-                                                   [self.mapPolylines addObject:polyline];
-                                               }
-                                           }];
+                                     drivingOptions:options
+                                       routeHandler:^(NSArray<YMKDrivingRoute *> *routes, NSError *error) {
+                [self clearPolylines];
+                YMKMapObjectCollection* mapObjects = self.map.mapWindow.map.mapObjects;
+                
+                if ([routes count] > 0) {
+                    YMKPolylineMapObject *polyline = [mapObjects addPolylineWithPolyline:[[routes objectAtIndex:0] geometry]];
+                    [polyline setStrokeColor:[UIColor colorWithRed:194.0f/255.0f
+                                                             green:19.0f/255.0f
+                                                              blue:19.0f/255.0f
+                                                             alpha:1.0f]];
+                    [self.mapPolylines addObject:polyline];
+                }
+            }];
         }
     } @catch (NSException *exception) {
         //TODO: Solve the error
@@ -199,17 +203,17 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     UIImage* icon = [self getImageByID:[dict valueForKey:@"icon"]];
     double longitude = [[dict objectForKey:@"longitude"] doubleValue];
     double latitude = [[dict objectForKey:@"latitude"] doubleValue];
-
+    
     YMKMapObjectCollection* mapObjects = _map.mapWindow.map.mapObjects;
     YMKPoint* point = [YMKPoint pointWithLatitude:latitude longitude:longitude];
     YMKPlacemarkMapObject* placemark = [mapObjects addPlacemarkWithPoint:point];
-
+    
     [_mapMarkers addObject:placemark];
-
+    
     [placemark setIconWithImage: icon];
     [placemark setOpacity: 1];
     [placemark setDraggable: false];
-
+    
     NSDictionary* userData = dict[@"userData"];
     if (userData != nil) {
         [placemark setUserData: userData];
@@ -235,16 +239,16 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 
 - (void) addPolygon: (NSMutableArray*)rectPoints backgroundColor: (UIColor*)backgroundColor borderColor: (UIColor*)borderColor dict: (NSDictionary*)dict {
     YMKPolygon *jsPolygon = [YMKPolygon polygonWithOuterRing:[YMKLinearRing linearRingWithPoints:rectPoints] innerRings:[[NSMutableArray alloc]init]];
-
+    
     YMKMapObjectCollection* mapObjects = _map.mapWindow.map.mapObjects;
     YMKPolygonMapObject* polygon = [mapObjects addPolygonWithPolygon:jsPolygon];
-
+    
     [_mapPolygons addObject:polygon];
-
+    
     [polygon setStrokeColor:borderColor];
     [polygon setStrokeWidth:1.0f];
     [polygon setFillColor:backgroundColor];
-
+    
     NSDictionary* userData = dict[@"userData"];
     if (userData != nil) {
         [polygon setUserData: userData];
@@ -254,7 +258,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 
 - (void) clearMarkers {
     YMKMapObjectCollection* mapObjects = _map.mapWindow.map.mapObjects;
-
+    
     for (YMKPlacemarkMapObject* marker in _mapMarkers) {
         @try {
             [mapObjects removeWithMapObject:marker];
@@ -262,13 +266,13 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
             //TODO: Solve the error
         }
     }
-
+    
     [_mapMarkers removeAllObjects];
 }
 
 - (void) clearPolygons {
     YMKMapObjectCollection* mapObjects = _map.mapWindow.map.mapObjects;
-
+    
     for (YMKPlacemarkMapObject* polygon in _mapPolygons) {
         @try {
             [mapObjects removeWithMapObject:polygon];
@@ -276,13 +280,13 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
             //TODO: Solve the error
         }
     }
-
+    
     [_mapPolygons removeAllObjects];
 }
 
 - (void) clearPolylines {
     YMKMapObjectCollection* mapObjects = _map.mapWindow.map.mapObjects;
-
+    
     for (YMKPlacemarkMapObject* polyline in _mapPolylines) {
         @try {
             [mapObjects removeWithMapObject:polyline];
@@ -290,7 +294,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
             //TODO: Solve the error
         }
     }
-
+    
     [_mapPolylines removeAllObjects];
 }
 
@@ -303,7 +307,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
         YMKPoint* point = [self getDeviceLocation];
         YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:14 azimuth:0 tilt:0];
         YMKAnimation* animation = [YMKAnimation animationWithType:YMKAnimationTypeSmooth duration:1];
-
+        
         [self.map.mapWindow.map moveWithCameraPosition:cameraPos animationType:animation cameraCallback:nil];
     }];
 }
@@ -312,37 +316,37 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         YMKPoint* point = [self getDeviceLocation];
         YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:14 azimuth:0 tilt:0];
-
+        
         YMKSearchOptions* options = [YMKSearchOptions new];
         options.searchTypes = YMKSearchTypeGeo;
-
+        
         _searchSession = [_searchManager submitWithPoint:cameraPos.target
                                                     zoom:[NSNumber numberWithInt: 20]
                                            searchOptions:options
                                          responseHandler:^(YMKSearchResponse *response, NSError *error) {
-                                             NSArray* searchResultList = [[response collection] children];
-
-                                             if ([searchResultList count] > 0) {
-                                                 YMKGeoObject* geoObject = [searchResultList[0] obj];
-                                                 YMKPoint* resultLocation = [[geoObject geometry][0] point];
-
-                                                 if (resultLocation != nil) {
-                                                     NSString* descriptionLocation = [geoObject descriptionText];
-                                                     NSString* location = [geoObject name];
-
-                                                     NSDictionary* addressDict = @{
-                                                                                   @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
-                                                                                   @"longitude" : [NSString stringWithFormat:@"%f", point.longitude],
-                                                                                   @"location": location,
-                                                                                   @"descriptionLocation": descriptionLocation == nil ? @"" : descriptionLocation,
-                                                                                   };
-
-                                                     NSLog(@"onLocationSearch with output info: %@", addressDict);
-
-                                                     self.onDeviceLocationSearch(addressDict);
-                                                 }
-                                             }
-                                         }];
+            NSArray* searchResultList = [[response collection] children];
+            
+            if ([searchResultList count] > 0) {
+                YMKGeoObject* geoObject = [searchResultList[0] obj];
+                YMKPoint* resultLocation = [[geoObject geometry][0] point];
+                
+                if (resultLocation != nil) {
+                    NSString* descriptionLocation = [geoObject descriptionText];
+                    NSString* location = [geoObject name];
+                    
+                    NSDictionary* addressDict = @{
+                        @"latitude" : [NSString stringWithFormat:@"%f", point.latitude],
+                        @"longitude" : [NSString stringWithFormat:@"%f", point.longitude],
+                        @"location": location,
+                        @"descriptionLocation": descriptionLocation == nil ? @"" : descriptionLocation,
+                    };
+                    
+                    NSLog(@"onLocationSearch with output info: %@", addressDict);
+                    
+                    self.onDeviceLocationSearch(addressDict);
+                }
+            }
+        }];
     }];
 }
 
@@ -350,10 +354,10 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         YMKPoint* point = self.map.mapWindow.map.cameraPosition.target;
         float zoom = self.map.mapWindow.map.cameraPosition.zoom + 2;
-
+        
         YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:zoom azimuth:0 tilt:0];
         YMKAnimation* animation = [YMKAnimation animationWithType:YMKAnimationTypeSmooth duration:1];
-
+        
         [self.map.mapWindow.map moveWithCameraPosition:cameraPos animationType:animation cameraCallback:nil];
     }];
 }
@@ -362,10 +366,10 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         YMKPoint* point = self.map.mapWindow.map.cameraPosition.target;
         float zoom = self.map.mapWindow.map.cameraPosition.zoom - 2;
-
+        
         YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:zoom azimuth:0 tilt:0];
         YMKAnimation* animation = [YMKAnimation animationWithType:YMKAnimationTypeSmooth duration:1];
-
+        
         [self.map.mapWindow.map moveWithCameraPosition:cameraPos animationType:animation cameraCallback:nil];
     }];
 }
@@ -385,24 +389,24 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
                                [YMKPoint pointWithLatitude: [[northEast objectForKey:@"latitude"] doubleValue]
                                                  longitude: [[northEast objectForKey:@"longitude"] doubleValue]]];
             }
-
+            
             YMKSearchOptions* options = [YMKSearchOptions new];
             options.searchTypes = YMKSearchTypeGeo;
-
+            
             [_searchManager suggestWithText:query window:boundingBox searchOptions:options responseHandler:^(NSArray<YMKSuggestItem *> *suggestItems, NSError *error) {
                 NSMutableArray* suggestResult = [[NSMutableArray alloc]init];
                 unsigned long suggestionsSize = MIN(5, [suggestItems count]);
-
+                
                 for (int i = 0; i < suggestionsSize; i++) {
                     [suggestResult addObject:@{
                         @"value": [[[suggestItems objectAtIndex:i] title] text],
                         @"searchText": [[suggestItems objectAtIndex:i] searchText]
                     }];
                 }
-
+                
                 NSMutableDictionary* resultObject = [[NSMutableDictionary alloc]init];
                 [resultObject setValue:suggestResult forKey:@"suggestions"];
-
+                
                 self.onSuggestionsFetch(resultObject);
             }];
         }
@@ -414,13 +418,13 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
         double latitude = [[region objectForKey:@"latitude"] doubleValue];
         double longitude = [[region objectForKey:@"longitude"] doubleValue];
         float zoom = [[region objectForKey:@"zoom"] floatValue];
-
+        
         YMKPoint* point = [YMKPoint pointWithLatitude:latitude longitude:longitude];
-
+        
         float cameraPositionZoom = self.map.mapWindow.map.cameraPosition.zoom;
         float navigationZoom = zoom ? zoom : cameraPositionZoom;
         YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:navigationZoom azimuth:0 tilt:0];
-
+        
         if (isAnimated) {
             YMKAnimation* animation = [YMKAnimation animationWithType:YMKAnimationTypeSmooth duration:1];
             [self.map.mapWindow.map moveWithCameraPosition:cameraPos animationType:animation cameraCallback:nil];
@@ -434,14 +438,14 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         double neLatitude = [[northEastRegion objectForKey:@"latitude"] doubleValue];
         double neLongitude = [[northEastRegion objectForKey:@"longitude"] doubleValue];
-
+        
         YMKPoint* northEastPoint = [YMKPoint pointWithLatitude:neLatitude longitude:neLongitude];
-
+        
         double swLatitude = [[southWestRegions objectForKey:@"latitude"] doubleValue];
         double swLongitude = [[southWestRegions objectForKey:@"longitude"] doubleValue];
-
+        
         YMKPoint* southWestPoint = [YMKPoint pointWithLatitude:swLatitude longitude:swLongitude];
-
+        
         YMKBoundingBox* boundingBox = [YMKBoundingBox boundingBoxWithSouthWest:southWestPoint northEast:northEastPoint];
         @try {
             YMKCameraPosition* cameraPosition = [self.map.mapWindow.map cameraPositionWithBoundingBox:boundingBox];
@@ -456,7 +460,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
 {
     YMKPoint* lastUserLocation = self.map.mapWindow.map.userLocationLayer.cameraPosition.target;
     YMKPoint* point = [YMKPoint pointWithLatitude:lastUserLocation.latitude longitude:lastUserLocation.longitude];
-
+    
     return point;
 }
 
@@ -473,7 +477,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     if ([mapObject isKindOfClass:[YMKPlacemarkMapObject class]] || [mapObject isKindOfClass:[YMKPolygonMapObject class]]) {
         NSMutableDictionary* resultObject = [[NSMutableDictionary alloc]init];
         id userData = [mapObject userData];
-
+        
         if (userData != nil) {
             @try {
                 [resultObject setValue:userData forKey:@"data"];
@@ -481,16 +485,16 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
                 //TODO: Solve the error
             }
         }
-
+        
         [resultObject setValue:[NSNumber numberWithDouble:[point latitude]] forKey:@"latitude"];
         [resultObject setValue:[NSNumber numberWithDouble:[point longitude]] forKey:@"longitude"];
-
+        
         if ([mapObject isKindOfClass:[YMKPlacemarkMapObject class]]) {
             self.onMarkerPress(resultObject);
         } else {
             self.onPolygonPress(resultObject);
         }
-
+        
         return true;
     }
     return false;
@@ -521,21 +525,21 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
                     cameraUpdateSource:(YMKCameraUpdateSource)cameraUpdateSource
                               finished:(BOOL)finished {
     if (self.onCameraPositionChange) {
-        if (finished) {
+        if (finished && _isTappedOnMap) {
             self.onCameraPositionChange([self cameraPositionToJSON:cameraPosition]);
+            _isTappedOnMap = false;
         }
     }
-
+    
     _zoom = cameraPosition.zoom;
-
+    
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
-
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     NSLog(@"locationManager didFailWithError: %@", error.localizedDescription);
-
+    
     self.onLocationError(@{@"error": error.localizedDescription});
 }
 

@@ -47,6 +47,7 @@
 
 @property (nonatomic) YMKMapView *map;
 @property (nonatomic) float zoom;
+@property (nonatomic) BOOL isTappedOnMap;
 
 @property (nonatomic) UIImage* userLocationIcon;
 
