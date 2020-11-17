@@ -44,7 +44,7 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     [userLocationLayer setHeadingEnabled: true];
     [userLocationLayer setObjectListenerWithObjectListener: self];
     
-    _userLocationIcon = [userLocationImage decodeBase64ToImage];
+    _userLocationIcon = [locationImage decodeBase64ToImage];
     _zoom = 0;
     _isTappedOnMap = false;
     
