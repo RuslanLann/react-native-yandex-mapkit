@@ -413,11 +413,13 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         double latitude = [[region objectForKey:@"latitude"] doubleValue];
         double longitude = [[region objectForKey:@"longitude"] doubleValue];
+        float zoom = [[region objectForKey:@"zoom"] floatValue];
 
         YMKPoint* point = [YMKPoint pointWithLatitude:latitude longitude:longitude];
 
-        float zoom = self.map.mapWindow.map.cameraPosition.zoom;
-        YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:zoom azimuth:0 tilt:0];
+        float cameraPositionZoom = self.map.mapWindow.map.cameraPosition.zoom;
+        float navigationZoom = zoom ? zoom : cameraPositionZoom;
+        YMKCameraPosition* cameraPos = [YMKCameraPosition cameraPositionWithTarget:point zoom:navigationZoom azimuth:0 tilt:0];
 
         if (isAnimated) {
             YMKAnimation* animation = [YMKAnimation animationWithType:YMKAnimationTypeSmooth duration:1];
