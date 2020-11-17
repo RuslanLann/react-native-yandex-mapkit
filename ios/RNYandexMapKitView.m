@@ -46,7 +46,6 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
     
     _userLocationIcon = [locationImage decodeBase64ToImage];
     _zoom = 0;
-    _isTappedOnMap = false;
     
     return self;
 }
@@ -118,8 +117,6 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
         
         NSLog(@"onMapPress with output info: %@", addressDict);
         self.onMapPress(addressDict);
-        
-        _isTappedOnMap = true;
     }
 }
 
@@ -523,10 +520,9 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
                         cameraPosition:(nonnull YMKCameraPosition *)cameraPosition
                     cameraUpdateSource:(YMKCameraUpdateSource)cameraUpdateSource
                               finished:(BOOL)finished {
-    if (self.onCameraPositionChange) {
-        if (finished && _isTappedOnMap) {
+    if (finished) {
+        if (self.onCameraPositionChange) {
             self.onCameraPositionChange([self cameraPositionToJSON:cameraPosition]);
-            _isTappedOnMap = false;
         }
     }
     
