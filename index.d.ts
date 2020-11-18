@@ -16,6 +16,7 @@ declare module "react-native-yandex-mapkit" {
         onDeviceLocationSearch?: (data: DeviceLocation) => void;
         onCameraPositionChange?: (event: NativeSyntheticEvent<CameraPosition>) => void;
         searchLocation?: boolean;
+        disableUserLocationIcon?: boolean;
         searchRoute?: MarkerProps[];
         searchMarker?: MarkerProps;
         style?: StyleProp<ViewStyle>;
