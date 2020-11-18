@@ -42,10 +42,12 @@
 @property (nonatomic, copy) NSDictionary* initialRegion;
 @property (nonatomic, copy) NSDictionary* boundingBox;
 @property (nonatomic) BOOL searchLocation;
+@property (nonatomic) BOOL disableUserLocationIcon;
 @property (nonatomic, copy) NSArray* searchRoute;
 @property (nonatomic, copy) NSDictionary* searchMarker;
 
 @property (nonatomic) YMKMapView *map;
+@property (nonatomic) YMKUserLocationView *userLocationView;
 @property (nonatomic) float zoom;
 
 @property (nonatomic) UIImage* userLocationIcon;
@@ -60,6 +62,7 @@
 - (void) addMarkerWithJSON: (NSMutableDictionary *)json;
 - (void) addPolygon: (NSMutableArray*)rectPoints backgroundColor: (UIColor*)backgroundColor borderColor: (UIColor*)borderColor dict: (NSDictionary*)dict;
 - (void) setSearchLocation: (BOOL)json;
+- (void) setDisableUserLocaitonIcon: (BOOL)json;
 - (void) setSearchMarker:(NSDictionary *)searchMarker;
 
 - (void) navigateToUserLocation;

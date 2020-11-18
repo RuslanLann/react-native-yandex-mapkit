@@ -31,6 +31,14 @@ RCT_CUSTOM_VIEW_PROPERTY(searchLocation, BOOL, RNYandexMapKitView) {
     }
 };
 
+RCT_CUSTOM_VIEW_PROPERTY(disableUserLocationIcon, BOOL, RNYandexMapKitView) {
+    if ([json  isEqual: @(YES)]) {
+        [view setDisableUserLocaitonIcon: true];
+    } else {
+        [view setDisableUserLocaitonIcon: false];
+    }
+};
+
 RCT_CUSTOM_VIEW_PROPERTY(markers, NSArray, RNYandexMapKitView)
 {
     [view clearMarkers];
