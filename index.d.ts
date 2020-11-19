@@ -52,8 +52,9 @@ declare module "react-native-yandex-mapkit" {
     export interface Region {
         latitude: number;
         longitude: number;
-        latitudeDelta: number;
-        longitudeDelta: number;
+        latitudeDelta?: number;
+        longitudeDelta?: number;
+        zoom?: number;
     }
 
     export interface LatLng {
