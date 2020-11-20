@@ -111,6 +111,7 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
     public static final String PROP_SEARCH_LOCATION = "searchLocation";
     public static final String PROP_SEARCH_ROUTE = "searchRoute";
     public static final String PROP_SEARCH_MARKER = "searchMarker";
+    public static final String PROP_DISABLE_USER_LOCATION_ICON = "disableUserLocationIcon";
 
     private UserLocationLayer userLocationLayer;
     private ThemedReactContext context = null;
@@ -123,6 +124,8 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
     private DrivingRouter drivingRouter;
 
     private boolean shouldSearchLocation = false;
+    private UserLocationView _userLocationView = null;
+    private boolean _disableUserLocationIcon = false;
 
     private List<PolygonMapObject> polygonsList = new ArrayList<PolygonMapObject>();
     private List<PlacemarkMapObject> markersList = new ArrayList<PlacemarkMapObject>();
@@ -137,6 +140,10 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
     private final SearchOptions suggestionSearchOptions = new SearchOptions().setSearchTypes(SearchType.GEO.value);
 
     //TODO: Add icon prop
+    private byte[] emptyImageDecodedString = Base64.decode("iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAQAAABu4E3oAAAAGElEQVR42mNkIBkwjmoZ1TKqZVTLENcCAEW6ABqcVA4WAAAAAElFTkSuQmCC", Base64.DEFAULT);
+    private Bitmap emptyImageBitmap = BitmapFactory.decodeByteArray(emptyImageDecodedString, 0, emptyImageDecodedString.length);
+    private ImageProvider emptyImage = ImageProvider.fromBitmap(emptyImageBitmap);
+
     private byte[] imageDecodedString = Base64.decode("iVBORw0KGgoAAAANSUhEUgAAAB4AAAAqCAYAAACk2+sZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS40E0BoxAAAAkhJREFUWEftl79O40AQxv0OkMROZCAHytsc75AKIfEOQEFDAz21BQ0F0h05TgEhCoKERIEQgoIKJCr665b5otkwux4HW7FJcVj6SZv5832eOI7XgTFmKqhBn4uZmZjo9prRzsHS/HHSWbgiHpNO+wFrxJBDDWo1DR81aIHI37C+/SdqvNHa5AG16KH12BNQg2g6q9XWe80wt6EPeqFBa/UEUgEUnoSNnhSZBNZKmTsfUPC7FV3LxjJgTcfcMe1FjXPZUCasPTIfmfYb9UNZWAXsMTS3xrgN1OIK6A6NaRHTL/DSS2bS/9E2g7VV87C5MQRrxLRaDfaKC017t7Ji/r280Am7B2LIaT0ZdAM6g10l4dBfbJvXJFFN7YEcalCraUjgGRw3w1ctKYFg3gO1moYEnviq1aRlsPxz7KT+gVr0aFqST42LTGuPPFN/G6f4/4yn9qsGRabOMy0I6Fn5qCUkZf9zwTM4rde2tKRGWf/V8MRXXeiROOnTienCmLY74Y2XqAz2iqe3EWBjbPLuvILSYY+Prc8XTj2c1jfGFujCKywN1nZ3mcK8yqlH0wLfmF5dZve9holhTX1Db0EBbU0GsnESWMsxBc4HCwqLvCFmwRopU5AKWKihjOvtXFeJGgTUhOt94AnlhnvVaYEatKDxJCr+yso9maZADUogwK+ZqokP1441BWrQB0IkeC8NNLjmU1OgBjUg+KsVPUkjCedymQI1mAWE6b58loaAY7lNgRocBwyO5lp7Sad9C47i5l5RU6AGq8cE77senOxoWv4fAAAAAElFTkSuQmCC", Base64.DEFAULT);
     private Bitmap pinBitmapImage = BitmapFactory.decodeByteArray(imageDecodedString, 0, imageDecodedString.length);
     private ImageProvider pinImage = ImageProvider.fromBitmap(pinBitmapImage);
@@ -395,6 +402,18 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
         userLocationLayer.setEnabled(true);
         userLocationLayer.setHeadingEnabled(true);
         userLocationLayer.setObjectListener(this);
+    }
+
+    @ReactProp(name = PROP_DISABLE_USER_LOCATION_ICON, defaultBoolean = false)
+    public void setDisableUserLocationIcon(MapView view, boolean disableUserLocationIcon) {
+        ImageProvider userLocationIcon = disableUserLocationIcon ? emptyImage : locationImage;
+        _disableUserLocationIcon = disableUserLocationIcon;
+
+        if (_userLocationView != null) {
+            _userLocationView.getPin().setIcon(userLocationIcon);
+            _userLocationView.getArrow().setIcon(userLocationIcon);
+            _userLocationView.getAccuracyCircle().setFillColor(Color.TRANSPARENT);
+        }
     }
 
     @ReactProp(name = PROP_SEARCH_MARKER)
@@ -694,9 +713,13 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
 
     @Override
     public void onObjectAdded(UserLocationView userLocationView) {
-        userLocationView.getPin().setIcon(locationImage);
-        userLocationView.getArrow().setIcon(locationImage);
+        ImageProvider userLocationIcon = _disableUserLocationIcon ? emptyImage : locationImage;
+
+        userLocationView.getPin().setIcon(userLocationIcon);
+        userLocationView.getArrow().setIcon(userLocationIcon);
         userLocationView.getAccuracyCircle().setFillColor(Color.TRANSPARENT);
+
+        _userLocationView = userLocationView;
     }
 
     @Override
