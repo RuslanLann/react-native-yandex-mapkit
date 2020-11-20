@@ -458,10 +458,11 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
     public void setNavigateToCoordinates(ReadableMap region, boolean isAnimated) {
         double latitude = region.getDouble("latitude");
         double longitude = region.getDouble("longitude");
+        float zoom = region.getInt("zoom");
 
         Point point = new Point(latitude, longitude);
 
-        this.navigateToCoordinates(point, isAnimated);
+        this.navigateToCoordinates(point, isAnimated, zoom);
     }
 
     public void zoomIn() {
@@ -521,8 +522,8 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
         }
     }
 
-    public void navigateToCoordinates(Point point, Boolean isAnimated) {
-        CameraPosition position = new CameraPosition(point, mapView.getMap().getCameraPosition().getZoom(), 0.0f, 0.0f);
+    public void navigateToCoordinates(Point point, Boolean isAnimated, float zoom) {
+        CameraPosition position = new CameraPosition(point, zoom, 0.0f, 0.0f);
 
         if (isAnimated) {
             mapView.getMap().move(position, new Animation(Animation.Type.SMOOTH, 1), null);
