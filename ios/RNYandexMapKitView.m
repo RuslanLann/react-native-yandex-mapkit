@@ -537,7 +537,9 @@ static NSString* courierImage = @"iVBORw0KGgoAAAANSUhEUgAAADwAAAA9CAYAAADxoArXAA
                         cameraPosition:(nonnull YMKCameraPosition *)cameraPosition
                     cameraUpdateSource:(YMKCameraUpdateSource)cameraUpdateSource
                               finished:(BOOL)finished {
-    if (finished) {
+    Boolean isGesture = cameraUpdateSource == YMKCameraUpdateSourceGestures;
+    
+    if (finished && isGesture) {
         if (self.onCameraPositionChange) {
             self.onCameraPositionChange([self cameraPositionToJSON:cameraPosition]);
         }
