@@ -42,7 +42,9 @@ import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.geometry.Polygon;
 import com.yandex.mapkit.geometry.Polyline;
 import com.yandex.mapkit.layers.ObjectEvent;
+import com.yandex.mapkit.map.CameraListener;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.CameraUpdateSource;
 import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
@@ -107,6 +109,7 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
     public static final String PROP_ON_MAP_PRESS = "onMapPress";
     public static final String PROP_ON_LOCATION_SEARCH = "onLocationSearch";
     public static final String PROP_ON_DEVICE_LOCATION_SEARCH = "onDeviceLocationSearch";
+    public static final String PROP_ON_CAMERA_POSITION_CHANGE = "onCameraPositionChange";
     public static final String PROP_ON_SUGGESTIONS_FETCH = "onSuggestionsFetch";
     public static final String PROP_SEARCH_LOCATION = "searchLocation";
     public static final String PROP_SEARCH_ROUTE = "searchRoute";
@@ -300,6 +303,31 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
         }
     };
 
+    private CameraListener cameraListener = new CameraListener() {
+        private WritableMap positionToJSON(CameraPosition position) {
+            WritableMap cameraPosition = Arguments.createMap();
+            Point point = position.getTarget();
+            cameraPosition.putDouble("azimuth", position.getAzimuth());
+            cameraPosition.putDouble("tilt", position.getTilt());
+            cameraPosition.putDouble("zoom", position.getZoom());
+            WritableMap target = Arguments.createMap();
+            target.putDouble("latitude", point.getLatitude());
+            target.putDouble("longitude", point.getLongitude());
+            cameraPosition.putMap("point", target);
+            return cameraPosition;
+        }
+    
+        @Override
+        public void onCameraPositionChanged(@NonNull com.yandex.mapkit.map.Map map, CameraPosition cameraPosition,
+                CameraUpdateSource cameraUpdateSource, boolean finished) {
+    
+            WritableMap position = positionToJSON(cameraPosition);
+            if (finished) {
+                sendNativeEvent(PROP_ON_CAMERA_POSITION_CHANGE, position, mapView.getId(), context);
+            }
+        }
+    };
+
     private InputListener inputListener = new InputListener() {
         @Override
         public void onMapTap(@NonNull com.yandex.mapkit.map.Map map, @NonNull Point point) {
@@ -373,6 +401,7 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
 
         mapView = new MapView(context);
         mapView.getMap().addInputListener(inputListener);
+        mapView.getMap().addCameraListener(cameraListener);
         mapView.getMap().getMapObjects().addCollection();
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -851,6 +880,7 @@ public class RNYandexMapKitManager extends SimpleViewManager<MapView> implements
         return MapBuilder.<String, Object>builder()
                 .put(PROP_ON_MAP_PRESS, MapBuilder.of("registrationName", PROP_ON_MAP_PRESS))
                 .put(PROP_ON_MARKER_PRESS, MapBuilder.of("registrationName", PROP_ON_MARKER_PRESS))
+                .put(PROP_ON_CAMERA_POSITION_CHANGE, MapBuilder.of("registrationName", PROP_ON_CAMERA_POSITION_CHANGE))
                 .put(PROP_ON_LOCATION_SEARCH, MapBuilder.of("registrationName", PROP_ON_LOCATION_SEARCH))
                 .put(PROP_ON_POLYGON_PRESS, MapBuilder.of("registrationName", PROP_ON_POLYGON_PRESS))
                 .put(PROP_ON_SUGGESTIONS_FETCH, MapBuilder.of("registrationName", PROP_ON_SUGGESTIONS_FETCH))
